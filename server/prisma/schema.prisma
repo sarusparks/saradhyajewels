@@ -1,0 +1,222 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum MetalType {
+  GOLD
+  SILVER
+  FASHION
+  BRIDAL
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURN_REQUESTED
+  RETURNED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id               String         @id @default(uuid())
+  email            String         @unique
+  phone            String?        @unique
+  fullName         String?
+  passwordHash     String?
+  googleId         String?        @unique
+  role             Role           @default(CUSTOMER)
+  isEmailVerified  Boolean        @default(false)
+  isPhoneVerified  Boolean        @default(false)
+  avatar           String?
+  addresses        Address[]
+  orders           Order[]
+  refreshTokens    RefreshToken[]
+  reviews          Review[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName   String
+  phone      String
+  line1      String
+  line2      String?
+  city       String
+  state      String
+  pincode    String
+  isDefault  Boolean  @default(false)
+  orders     Order[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String
+  slug        String     @unique
+  description String?
+  image       String?
+  parentId    String?
+  parent      Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Product {
+  id             String         @id @default(uuid())
+  name           String
+  slug           String         @unique
+  description    String
+  metalType      MetalType      @default(GOLD)
+  purityKarat    String?        // "22K", "18K", "14K", "925"
+  grossWeightGms Float?         // in grams
+  netGoldWeight  Float?         // in grams
+  makingCharge   Float          @default(0) // Making charges per gram or flat
+  basePrice      Float          // Base computed price in INR
+  discountPct    Float          @default(0)
+  hallmarkBis    Boolean        @default(true)
+  stoneDetails   String?        // e.g. "Cubic Zirconia / Diamond SI-IJ"
+  occasion       String?        // "Wedding", "Festive", "Daily", etc.
+  gender         String?        // "Women", "Men", "Unisex"
+  isFeatured     Boolean        @default(false)
+  isBestseller   Boolean        @default(false)
+  images         ProductImage[]
+  variants       Variant[]
+  reviews        Review[]
+  orderItems     OrderItem[]
+  categoryId     String
+  category       Category       @relation(fields: [categoryId], references: [id])
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  altText   String?
+  isPrimary Boolean  @default(false)
+  order     Int      @default(0)
+}
+
+model Variant {
+  id         String      @id @default(uuid())
+  productId  String
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size       String?     // Ring size e.g. "12", "14", "16" or bangle size "2.4", "2.6"
+  sku        String      @unique
+  stock      Int         @default(10)
+  priceDiff  Float       @default(0)
+  orderItems OrderItem[]
+}
+
+model Order {
+  id          String        @id @default(uuid())
+  orderNumber String        @unique
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  addressId   String
+  address     Address       @relation(fields: [addressId], references: [id])
+  status      OrderStatus   @default(PENDING)
+  subtotal    Float
+  makingAmt   Float         @default(0)
+  gstAmt      Float         // 3% GST
+  shipping    Float         @default(0)
+  discount    Float         @default(0)
+  total       Float
+  goldRateLocked Float?     // Rate of gold locked at time of order
+  payStatus   PaymentStatus @default(PENDING)
+  payMode     String?       // "RAZORPAY", "COD"
+  payment     Payment?
+  items       OrderItem[]
+  trackingNo  String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model OrderItem {
+  id             String   @id @default(uuid())
+  orderId        String
+  order          Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId      String
+  product        Product  @relation(fields: [productId], references: [id])
+  variantId      String?
+  variant        Variant? @relation(fields: [variantId], references: [id])
+  qty            Int      @default(1)
+  unitPrice      Float
+  totalPrice     Float
+  engravingText  String?
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  orderId       String        @unique
+  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  rzpOrderId    String?       @unique
+  rzpPaymentId  String?       @unique
+  rzpSignature  String?
+  status        PaymentStatus @default(PENDING)
+  amount        Float
+  currency      String        @default("INR")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating     Int      @default(5)
+  title      String?
+  comment    String
+  images     String[]
+  isVerified Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model GoldRateHistory {
+  id          String   @id @default(uuid())
+  rate24K     Float
+  rate22K     Float
+  rate18K     Float
+  rate14K     Float
+  silverRate  Float
+  effectiveAt DateTime @default(now())
+}

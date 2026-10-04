@@ -1,0 +1,260 @@
+// src/utils/constants.js — Saradhya Jewels (1 Gram Gold Jewellery)
+
+export const BRAND = {
+  name: 'Saradhya Jewels',
+  tagline: 'Glamour That Lasts — Beautiful 1 Gram Jewellery',
+  phone: '+91 98765 43210',
+  whatsapp: '919876543210',
+  email: 'support@saradhyajewels.com',
+  address: 'No. 12, Jewellers Street, Chennai – 600001, Tamil Nadu',
+  instagram: 'https://instagram.com/saradhyajewels',
+  facebook: 'https://facebook.com/saradhyajewels',
+  youtube: 'https://youtube.com/@saradhyajewels',
+}
+
+export const NAV_LINKS = [
+  {
+    id: 'collection',
+    label: 'Collection',
+    href: '/collection',
+    dropdown: null,
+    megaMenu: null,
+  },
+]
+
+export const OCCASIONS = [
+  {
+    id: 'wedding',
+    label: 'Bridal',
+    icon: '💍',
+    href: '/collection?occasion=Bridal',
+    color: 'from-amber-900/80 to-amber-700/60',
+    description: 'Stunning bridal sets & combos',
+  },
+  {
+    id: 'festive',
+    label: 'Festive',
+    icon: '🪔',
+    href: '/collection?occasion=Festive',
+    color: 'from-orange-900/80 to-red-700/60',
+    description: 'Shine at every celebration',
+  },
+  {
+    id: 'daily',
+    label: 'Daily Wear',
+    icon: '☀️',
+    href: '/collection?occasion=Daily Wear',
+    color: 'from-yellow-900/80 to-amber-600/60',
+    description: 'Lightweight everyday glamour',
+  },
+  {
+    id: 'office',
+    label: 'Office',
+    icon: '💼',
+    href: '/collection?occasion=Office',
+    color: 'from-stone-800/80 to-stone-600/60',
+    description: 'Subtle professional elegance',
+  },
+  {
+    id: 'gifting',
+    label: 'Gifting',
+    icon: '🎁',
+    href: '/collection?occasion=Gifting',
+    color: 'from-rose-900/80 to-rose-700/60',
+    description: 'Perfect for every occasion',
+  },
+]
+
+export const METAL_TYPES = [
+  {
+    id: 'earrings',
+    label: 'Earrings',
+    sublabel: 'Jhumkas · Studs · Chandbalis',
+    href: '/collection?category=earrings',
+    bgColor: '#C9A227',
+    textColor: '#FBF7F0',
+    accentColor: '#F0D080',
+    image: '/images/gold-collection.jpg',
+    description: 'Gold Plated',
+  },
+  {
+    id: 'necklaces',
+    label: 'Necklaces',
+    sublabel: 'Chokers · Harams · Pendants',
+    href: '/collection?category=necklaces',
+    bgColor: '#B76E79',
+    textColor: '#FBF7F0',
+    accentColor: '#D4A5AC',
+    image: '/images/bridal-collection.jpg',
+    description: 'Statement Pieces',
+  },
+  {
+    id: 'bangles',
+    label: 'Bangles & Bracelets',
+    sublabel: 'Kadas · Bangles · Bracelets',
+    href: '/collection?category=bangles',
+    bgColor: '#8B6914',
+    textColor: '#FBF7F0',
+    accentColor: '#C9A227',
+    image: '/images/silver-collection.jpg',
+    description: 'Wrist Glamour',
+  },
+  {
+    id: 'jewellery-sets',
+    label: 'Jewellery Sets',
+    sublabel: 'Bridal · Festive · Party Sets',
+    href: '/collection?category=jewellery-sets',
+    bgColor: '#9B1B30',
+    textColor: '#FBF7F0',
+    accentColor: '#C9A227',
+    image: '/images/artificial-collection.jpg',
+    description: 'Complete Combos',
+  },
+]
+
+export const TRUST_POINTS = [
+  {
+    id: 'quality',
+    icon: '✨',
+    title: 'Premium 1 Gram Gold',
+    desc: 'Thick gold plating that lasts long with a real gold look & feel',
+  },
+  {
+    id: 'shipping',
+    icon: '📦',
+    title: 'Free Shipping',
+    desc: 'Free delivery on all orders across India, packed with care',
+  },
+  {
+    id: 'return',
+    icon: '🔄',
+    title: '7-Day Easy Returns',
+    desc: 'Not happy? Return or exchange with zero questions asked',
+  },
+  {
+    id: 'payment',
+    icon: '🔒',
+    title: 'Secure Payments',
+    desc: 'UPI, cards, net banking & COD — all 100% safe & encrypted',
+  },
+  {
+    id: 'affordable',
+    icon: '💰',
+    title: 'Best Price Guarantee',
+    desc: 'Real gold look at a fraction of the price — unbeatable value',
+  },
+  {
+    id: 'cod',
+    icon: '🚚',
+    title: 'Cash on Delivery',
+    desc: 'COD available pan-India — pay when you receive your order',
+  },
+]
+
+export const FEATURED_PRODUCTS = [
+  {
+    id: '1',
+    name: 'Temple Lakshmi Jhumka',
+    slug: 'temple-lakshmi-jhumka-1gram',
+    metal: '1 Gram Gold',
+    karat: null,
+    price: 899,
+    originalPrice: 1499,
+    weight: null,
+    badge: 'Bestseller',
+    image: '/images/gold-collection.jpg',
+    rating: 4.9,
+    reviews: 832,
+    isWishlisted: false,
+  },
+  {
+    id: '2',
+    name: 'Bridal Choker Necklace Set',
+    slug: 'bridal-choker-necklace-set-1gram',
+    metal: '1 Gram Gold',
+    karat: null,
+    price: 1799,
+    originalPrice: 2999,
+    weight: null,
+    badge: 'Bridal Fav',
+    image: '/images/bridal-collection.jpg',
+    rating: 4.8,
+    reviews: 461,
+    isWishlisted: false,
+  },
+  {
+    id: '3',
+    name: 'Chandbali Drop Earrings',
+    slug: 'chandbali-drop-earrings-1gram',
+    metal: '1 Gram Gold',
+    karat: null,
+    price: 649,
+    originalPrice: 999,
+    weight: null,
+    badge: 'Trending',
+    image: '/images/silver-collection.jpg',
+    rating: 4.9,
+    reviews: 1204,
+    isWishlisted: false,
+  },
+  {
+    id: '4',
+    name: 'Kundan Meenakari Bangle Set',
+    slug: 'kundan-meenakari-bangle-set-1gram',
+    metal: '1 Gram Gold',
+    karat: null,
+    price: 1299,
+    originalPrice: 1999,
+    weight: null,
+    badge: 'New Arrival',
+    image: '/images/artificial-collection.jpg',
+    rating: 4.7,
+    reviews: 289,
+    isWishlisted: false,
+  },
+]
+
+export const TESTIMONIALS = [
+  {
+    id: 1,
+    name: 'Priya Sundaram',
+    location: 'Chennai',
+    rating: 5,
+    text: 'Ordered the Lakshmi jhumkas for my sister\'s wedding. Everyone kept asking if it was real gold! The quality is amazing for the price. Absolutely love Saradhya Jewels.',
+    product: 'Temple Lakshmi Jhumka',
+    avatar: null,
+  },
+  {
+    id: 2,
+    name: 'Ananya Krishnaswamy',
+    location: 'Bangalore',
+    rating: 5,
+    text: 'Bought the bridal choker set for my reception — it looked stunning in every photo! Gold plating is thick and didn\'t tarnish even after a full day\'s wear. Highly recommend!',
+    product: 'Bridal Choker Necklace Set',
+    avatar: null,
+  },
+  {
+    id: 3,
+    name: 'Meera Iyer',
+    location: 'Mumbai',
+    rating: 5,
+    text: 'Got the bangle set as a Diwali gift for my mom. She thought it was real gold! The packaging was so beautiful, it felt like a premium luxury gift. Will definitely order again.',
+    product: 'Kundan Meenakari Bangle Set',
+    avatar: null,
+  },
+]
+
+export const GOLD_RATES_MOCK = {
+  '24K': 7285,
+  '22K': 6678,
+  '18K': 5464,
+  '14K': 4250,
+  silver: 89.5,
+  updatedAt: new Date().toISOString(),
+}
+
+export const INR = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 0,
+})
