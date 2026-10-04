@@ -1,6 +1,6 @@
 # Saradhya Jewels
 
-Saradhya Jewels is a luxury Indian jewelry e-commerce platform built with React + Vite on the frontend and Express + Prisma on the backend.
+Saradhya Jewels is a luxury Indian jewelry e-commerce platform.
 
 ---
 
@@ -8,21 +8,25 @@ Saradhya Jewels is a luxury Indian jewelry e-commerce platform built with React 
 
 ```text
 saradhyajewels/
-├── client/              # Standalone Frontend (React + Vite + Tailwind CSS)
+├── frontend/            # Standalone Frontend (React + Vite + Tailwind CSS)
 │   ├── src/             # Frontend source code
 │   ├── public/          # Static assets & images
 │   ├── vercel.json      # Vercel SPA routing configuration
 │   ├── .env.example     # Environment variable template
-│   └── package.json     # Frontend dependencies & scripts
+│   ├── .gitignore       # Frontend-specific gitignore
+│   ├── package.json     # Frontend dependencies & scripts
+│   └── README.md        # Frontend documentation
 │
-├── server/              # Standalone Backend (Express + Prisma + JWT)
+├── backend/             # Standalone Backend (Express + Prisma + JWT)
 │   ├── src/             # Express controllers, routes & middleware
 │   ├── prisma/          # Database schema & migrations
 │   ├── .env.example     # Backend environment template
-│   └── package.json     # Backend dependencies & scripts
+│   ├── .gitignore       # Backend-specific gitignore
+│   ├── package.json     # Backend dependencies & scripts
+│   └── README.md        # Backend documentation
 │
-├── vercel.json          # Root Vercel fallback configuration
-└── package.json         # Monorepo root dev scripts
+├── .gitignore           # Repository root gitignore
+└── README.md            # Repository documentation
 ```
 
 ---
@@ -33,38 +37,34 @@ When importing this repository into [Vercel](https://vercel.com):
 
 1. **Import Project**: Select the GitHub repository `sarusparks/saradhyajewels`.
 2. **Root Directory**:
-   - In the "Root Directory" section, click **Edit** and choose `client`.
+   - In the "Root Directory" section, click **Edit** and select **`frontend`**.
 3. **Build & Output Settings**:
    - Framework Preset: **Vite** (detected automatically)
    - Build Command: `npm run build`
    - Output Directory: `dist`
    - Install Command: `npm install`
 4. **Environment Variables**:
-   - `VITE_API_URL`: Set this to your deployed backend URL (e.g. `https://your-api.onrender.com`).
-5. **Deploy**: Click **Deploy**. Vercel will automatically build and serve your frontend with full single-page application (SPA) routing support.
+   - `VITE_API_URL`: Set this to your deployed backend URL (e.g., `https://your-api.onrender.com`).
+5. **Deploy**: Click **Deploy**. Vercel will automatically build and deploy your frontend with SPA routing support configured in `frontend/vercel.json`.
 
 ---
 
 ## Local Development
 
-### Option A: Run Both Together (from Root)
-```bash
-npm install
-npm run dev
-```
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:4000`
+Each folder is completely independent with its own `package.json` and dependencies:
 
-### Option B: Run Frontend Separately
+### Running Frontend
 ```bash
-cd client
+cd frontend
 npm install
 npm run dev
 ```
+Runs at: `http://localhost:5173`
 
-### Option C: Run Backend Separately
+### Running Backend
 ```bash
-cd server
+cd backend
 npm install
 npm run dev
 ```
+Runs at: `http://localhost:4000`
