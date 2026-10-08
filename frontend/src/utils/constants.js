@@ -20,6 +20,29 @@ export const NAV_LINKS = [
     dropdown: null,
     megaMenu: null,
   },
+  {
+    id: 'rentals',
+    label: 'Rentals',
+    href: '/rentals',
+    dropdown: {
+      title: 'Bridal & Occasion Rentals',
+      items: [
+        { label: 'All Rental Jewellery', href: '/rentals', badge: 'New' },
+        { label: 'Bridal Sets Rental', href: '/rentals?category=bridal', badge: 'Popular' },
+        { label: 'Temple Jewellery Sets', href: '/rentals?category=temple' },
+        { label: 'Kundan & Polki Sets', href: '/rentals?category=kundan' },
+        { label: 'Reception & Choker Sets', href: '/rentals?category=choker' },
+        { label: 'How Rental Works', href: '/rentals#how-it-works' },
+      ],
+      featured: {
+        label: 'Bridal Heritage Rental Combos',
+        href: '/rentals?category=bridal',
+        image: '/images/bridal-collection.jpg',
+        badge: 'From ₹599/day',
+      },
+    },
+    megaMenu: null,
+  },
 ]
 
 export const OCCASIONS = [

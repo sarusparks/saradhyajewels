@@ -8,6 +8,7 @@ const footerNav = {
     { label: 'Silver Jewellery', href: '/silver' },
     { label: 'Fashion Jewellery', href: '/artificial' },
     { label: 'Bridal Sets', href: '/bridal' },
+    { label: 'Jewellery Rentals', href: '/rentals' },
     { label: 'New Arrivals', href: '/new' },
     { label: 'Bestsellers', href: '/bestsellers' },
   ],

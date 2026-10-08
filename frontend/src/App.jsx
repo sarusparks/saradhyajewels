@@ -9,6 +9,7 @@ import WhatsAppButton from '@/components/common/WhatsAppButton'
 import Home from '@/pages/Home'
 import CollectionPage from '@/pages/CollectionPage'
 import ProductDetailPage from '@/pages/ProductDetailPage'
+import RentalsPage from '@/pages/RentalsPage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
 
 function ScrollToTop() {
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/collection" element={<CollectionPage />} />
           <Route path="/collections" element={<CollectionPage />} />
+          <Route path="/rentals" element={<RentalsPage />} />
           <Route path="/gold" element={<PlaceholderPage title="Gold Jewellery Collection" phase="Phase 2" />} />
           <Route path="/silver" element={<PlaceholderPage title="925 Sterling Silver" phase="Phase 2" />} />
           <Route path="/artificial" element={<PlaceholderPage title="Fashion & Kundan Jewellery" phase="Phase 2" />} />
