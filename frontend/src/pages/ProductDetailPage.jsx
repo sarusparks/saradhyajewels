@@ -19,7 +19,8 @@ import {
 import { ALL_PRODUCTS } from '@/data/productsData'
 import { FEATURED_PRODUCTS } from '@/utils/constants'
 import { formatINR, calcJewelryPrice, discountPercent } from '@/utils/currency'
-import { useCartStore, useWishlistStore, useUIStore } from '@/store'
+import { useWishlistStore } from '@/store'
+import { useAddToCartWithAuth } from '@/hooks/useAddToCartWithAuth'
 import ProductCard from '@/components/collection/ProductCard'
 import toast from 'react-hot-toast'
 
@@ -55,9 +56,8 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState('specifications')
 
   // Stores
-  const { addItem } = useCartStore()
+  const { addToCart } = useAddToCartWithAuth()
   const { toggleWishlist, isWishlisted } = useWishlistStore()
-  const { openCart } = useUIStore()
 
   const wishlisted = isWishlisted(product.id)
 
@@ -69,7 +69,7 @@ export default function ProductDetailPage() {
   }, [product])
 
   const handleAddToCart = () => {
-    addItem({
+    addToCart({
       productId: product.id,
       variantId: `${product.id}-${selectedSize || 'default'}`,
       name: product.name,
@@ -79,13 +79,6 @@ export default function ProductDetailPage() {
       karat: product.purity,
       qty,
     })
-
-    toast.success(`${product.name} added to cart`, {
-      style: { background: '#1A1A2E', color: '#FBF7F0', border: '1px solid #C9A227' },
-      iconTheme: { primary: '#C9A227', secondary: '#1A1A2E' },
-    })
-
-    openCart()
   }
 
   const handleCheckPincode = (e) => {

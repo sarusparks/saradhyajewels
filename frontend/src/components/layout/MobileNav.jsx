@@ -95,12 +95,12 @@ export default function MobileNav() {
                 <p className="section-label mb-4">Quick Links</p>
                 <div className="space-y-3">
                   {[
+                    { label: 'Jewellery Rentals', href: '/rentals' },
+                    { label: 'My Account / Sign In', href: '/profile' },
                     { label: 'Wedding Collections', href: '/bridal' },
                     { label: 'Festival Specials', href: '/occasion/festive' },
                     { label: 'Gold Rate Today', href: '/gold-rates' },
                     { label: 'Custom Order', href: '/custom-order' },
-                    { label: 'My Orders', href: '/orders' },
-                    { label: 'Track Order', href: '/track' },
                   ].map((l) => (
                     <Link
                       key={l.href}

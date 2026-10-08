@@ -10,7 +10,10 @@ import Home from '@/pages/Home'
 import CollectionPage from '@/pages/CollectionPage'
 import ProductDetailPage from '@/pages/ProductDetailPage'
 import RentalsPage from '@/pages/RentalsPage'
+import AuthPage from '@/pages/AuthPage'
+import ProfilePage from '@/pages/ProfilePage'
 import PlaceholderPage from '@/pages/PlaceholderPage'
+import AuthListener from '@/components/auth/AuthListener'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -24,6 +27,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-ivory text-charcoal font-sans selection:bg-gold/30 selection:text-charcoal">
       <ScrollToTop />
+      <AuthListener />
 
       {/* Global Toast Notifications */}
       <Toaster
@@ -64,8 +68,11 @@ export default function App() {
           <Route path="/wishlist" element={<PlaceholderPage title="Your Wishlist" phase="Phase 4" />} />
           <Route path="/cart" element={<PlaceholderPage title="Shopping Bag" phase="Phase 4" />} />
           <Route path="/checkout" element={<PlaceholderPage title="Secure Checkout" phase="Phase 5" />} />
-          <Route path="/profile" element={<PlaceholderPage title="Customer Account" phase="Phase 3" />} />
-          <Route path="/auth/:action" element={<PlaceholderPage title="Authentication" phase="Phase 3" />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/auth/:action" element={<AuthPage />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/signup" element={<AuthPage />} />
           <Route path="/gold-silver-rates" element={<PlaceholderPage title="Live Bullion Rates & Charts" phase="Phase 2" />} />
           <Route path="*" element={<PlaceholderPage title="Page Not Found" phase="Roadmap" />} />
         </Routes>

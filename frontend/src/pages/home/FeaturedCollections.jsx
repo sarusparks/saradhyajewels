@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import { Heart, ShoppingBag, Star, Eye, Sparkles } from 'lucide-react'
 import { FEATURED_PRODUCTS } from '@/utils/constants'
 import { formatINR, discountPercent } from '@/utils/currency'
-import { useWishlistStore, useCartStore, useUIStore } from '@/store'
+import { useWishlistStore } from '@/store'
+import { useAddToCartWithAuth } from '@/hooks/useAddToCartWithAuth'
 import toast from 'react-hot-toast'
 
 const FILTERS = ['All', 'Earrings', 'Necklaces', 'Bangles', 'Sets', 'Bridal']
@@ -21,14 +22,13 @@ const FILTER_MAP = {
 export default function FeaturedCollections() {
   const [activeFilter, setActiveFilter] = useState('All')
   const { toggleWishlist, isWishlisted } = useWishlistStore()
-  const { addItem } = useCartStore()
-  const { openCart } = useUIStore()
+  const { addToCart } = useAddToCartWithAuth()
 
   // Since all our featured products are 1 gram, just show all for now
   const filtered = FEATURED_PRODUCTS
 
   const handleAddToCart = (product) => {
-    addItem({
+    addToCart({
       productId: product.id,
       variantId: `${product.id}-default`,
       name: product.name,
@@ -38,11 +38,6 @@ export default function FeaturedCollections() {
       karat: product.karat,
       qty: 1,
     })
-    toast.success(`${product.name} added to cart`, {
-      style: { background: '#1A1A2E', color: '#FBF7F0', border: '1px solid #C9A227' },
-      iconTheme: { primary: '#C9A227', secondary: '#1A1A2E' },
-    })
-    openCart()
   }
 
   return (

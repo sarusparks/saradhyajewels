@@ -47,10 +47,22 @@ export const useAuthStore = create(
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      pendingCartItem: null,
 
-      setUser: (user) => set({ user, isAuthenticated: !!user }),
+      setUser: (user) => set({
+        user: user ? {
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName || user.email?.split('@')[0],
+          photoURL: user.photoURL,
+        } : null,
+        isAuthenticated: !!user,
+        isLoading: false,
+      }),
       setLoading: (isLoading) => set({ isLoading }),
-      logout: () => set({ user: null, isAuthenticated: false }),
+      setPendingCartItem: (pendingCartItem) => set({ pendingCartItem }),
+      clearPendingCartItem: () => set({ pendingCartItem: null }),
+      logout: () => set({ user: null, isAuthenticated: false, pendingCartItem: null }),
     }),
     { name: 'saradhya-auth', version: 1 }
   )

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Search, Heart, ShoppingBag, User, Menu, X, Phone, ChevronDown
 } from 'lucide-react'
-import { useCartStore, useUIStore, useWishlistStore } from '@/store'
+import { useCartStore, useUIStore, useWishlistStore, useAuthStore } from '@/store'
 import { NAV_LINKS } from '@/utils/constants'
 import MegaMenu from './MegaMenu'
 import MobileNav from './MobileNav'
@@ -18,6 +18,7 @@ export default function Header() {
   const { items: cartItems, totalItems } = useCartStore()
   const { items: wishlistItems } = useWishlistStore()
   const { openCart, openSearch, openMobileNav, isMobileNavOpen } = useUIStore()
+  const { user, isAuthenticated } = useAuthStore()
 
   const totalCartCount = cartItems.reduce((sum, i) => sum + i.qty, 0)
   const wishlistCount = wishlistItems.length
@@ -207,10 +208,28 @@ export default function Header() {
                 )}
               </button>
 
-              {/* User */}
-              <Link to="/profile" className="btn-icon hidden sm:flex" aria-label="My Account">
-                <User className="w-5 h-5" />
-              </Link>
+              {/* User / Auth */}
+              {isAuthenticated ? (
+                <Link
+                  to="/profile"
+                  className="btn-icon hidden sm:flex text-gold relative"
+                  aria-label={`My Account (${user?.displayName || 'Member'})`}
+                  title={`Logged in as ${user?.displayName || user?.email}`}
+                >
+                  <div className="w-6 h-6 rounded-full bg-gold/15 text-gold text-3xs font-bold flex items-center justify-center border border-gold/40">
+                    {user?.displayName ? user.displayName.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                </Link>
+              ) : (
+                <Link
+                  to="/auth/login"
+                  className="btn-icon hidden sm:flex text-charcoal/80 hover:text-gold transition-colors"
+                  aria-label="Sign In or Register"
+                  title="Sign In or Register"
+                >
+                  <User className="w-5 h-5" />
+                </Link>
+              )}
 
               {/* WhatsApp CTA (desktop) */}
               <a

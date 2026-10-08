@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Heart, ShoppingBag, Star, ShieldCheck, Check, ArrowRight } from 'lucide-react'
 import { formatINR } from '@/utils/currency'
-import { useWishlistStore, useCartStore, useUIStore } from '@/store'
+import { useWishlistStore } from '@/store'
+import { useAddToCartWithAuth } from '@/hooks/useAddToCartWithAuth'
 import toast from 'react-hot-toast'
 
 export default function QuickViewModal({ product, onClose }) {
@@ -16,14 +17,14 @@ export default function QuickViewModal({ product, onClose }) {
   const [isAdding, setIsAdding] = useState(false)
 
   const { toggleWishlist, isWishlisted } = useWishlistStore()
-  const { addItem } = useCartStore()
-  const { openCart } = useUIStore()
+  const { addToCart } = useAddToCartWithAuth()
 
   const wishlisted = isWishlisted(product.id)
 
   const handleAddToCart = () => {
     setIsAdding(true)
-    addItem({
+    onClose()
+    addToCart({
       productId: product.id,
       variantId: `${product.id}-${selectedSize || 'default'}`,
       name: product.name,
@@ -34,15 +35,8 @@ export default function QuickViewModal({ product, onClose }) {
       qty: 1,
     })
 
-    toast.success(`${product.name} added to cart`, {
-      style: { background: '#1A1A2E', color: '#FBF7F0', border: '1px solid #C9A227' },
-      iconTheme: { primary: '#C9A227', secondary: '#1A1A2E' },
-    })
-
     setTimeout(() => {
       setIsAdding(false)
-      onClose()
-      openCart()
     }, 400)
   }
 
