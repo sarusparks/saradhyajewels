@@ -12,6 +12,7 @@ export default function FilterSidebar({
 }) {
   const [openSections, setOpenSections] = useState({
     categories: true,
+    necklaces: true,
     price: true,
     sizes: true,
     availability: true,
@@ -87,6 +88,41 @@ export default function FilterSidebar({
                 <span>{cat.name}</span>
                 {isSelected && <Check className="w-3.5 h-3.5 text-gold" />}
               </button>
+            )
+          })}
+        </div>
+      </FilterSection>
+
+      {/* ── Necklaces (Heading & Sub-Headings) ── */}
+      <FilterSection
+        title="Necklaces"
+        isOpen={openSections.necklaces}
+        onToggle={() => toggleSection('necklaces')}
+        badge={(filters.necklaceTypes || []).length > 0 ? `${filters.necklaceTypes.length} selected` : null}
+      >
+        <div className="space-y-1">
+          {FILTER_OPTIONS.necklaceTypes.map((sub) => {
+            const isChecked = (filters.necklaceTypes || []).includes(sub.value)
+            return (
+              <label
+                key={sub.value}
+                className={`flex items-center justify-between py-1.5 px-2 text-xs transition-colors cursor-pointer select-none rounded-none ${
+                  isChecked
+                    ? 'bg-gold/15 text-gold-dark font-semibold border-l-2 border-gold pl-2'
+                    : 'text-charcoal/80 hover:bg-sand/40 hover:text-charcoal'
+                }`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => handleCheckboxToggle('necklaceTypes', sub.value)}
+                    className="rounded-none border-sand text-gold focus:ring-gold focus:ring-1 h-3.5 w-3.5 accent-[#C9A227]"
+                  />
+                  <span className="truncate">{sub.label}</span>
+                </div>
+                {isChecked && <Check className="w-3.5 h-3.5 text-gold shrink-0" />}
+              </label>
             )
           })}
         </div>

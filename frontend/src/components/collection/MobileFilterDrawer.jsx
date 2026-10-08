@@ -103,6 +103,46 @@ export default function MobileFilterDrawer({
                 </div>
               </div>
 
+              {/* ── Necklaces (Heading & Sub-Headings) ── */}
+              <div className="pt-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-body text-xs font-bold uppercase tracking-wider text-charcoal">
+                    Necklaces
+                  </h4>
+                  <span className="text-2xs font-semibold px-2 py-0.5 text-gold-dark bg-gold/15 rounded-full">
+                    {(filters.necklaceTypes || []).length > 0
+                      ? `${filters.necklaceTypes.length} Selected`
+                      : 'Designs'}
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  {FILTER_OPTIONS.necklaceTypes.map((sub) => {
+                    const isChecked = (filters.necklaceTypes || []).includes(sub.value)
+                    return (
+                      <label
+                        key={sub.value}
+                        className={`flex items-center justify-between p-2.5 text-xs border transition-all cursor-pointer select-none ${
+                          isChecked
+                            ? 'bg-gold/15 text-gold-dark font-semibold border-gold'
+                            : 'bg-white border-sand text-charcoal/80 hover:border-gold'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => handleCheckboxToggle('necklaceTypes', sub.value)}
+                            className="rounded-none border-sand text-gold focus:ring-gold focus:ring-1 h-3.5 w-3.5 accent-[#C9A227]"
+                          />
+                          <span className="truncate">{sub.label}</span>
+                        </div>
+                        {isChecked && <Check className="w-3.5 h-3.5 text-gold shrink-0" />}
+                      </label>
+                    )
+                  })}
+                </div>
+              </div>
+
               {/* ── Price Range ── */}
               <div className="pt-5">
                 <h4 className="font-body text-xs font-bold uppercase tracking-wider text-charcoal mb-3">

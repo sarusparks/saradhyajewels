@@ -32,6 +32,7 @@ export default function CollectionPage() {
 
   // Filters state
   const [filters, setFilters] = useState({
+    necklaceTypes: [],
     materials: [],
     gemstones: [],
     colours: [],
@@ -64,6 +65,12 @@ export default function CollectionPage() {
     const cat = searchParams.get('category') || 'all'
     setSelectedCategory(cat)
 
+    const necklaceTypeParam = searchParams.getAll('necklaceType')
+    const singleNecklaceType = searchParams.get('necklaceType')
+    const initialNecklaceTypes = necklaceTypeParam.length > 0
+      ? necklaceTypeParam
+      : (singleNecklaceType ? [singleNecklaceType] : [])
+
     const materialParam = searchParams.get('material')
     const gemstoneParam = searchParams.get('gemstone')
     const colourParam = searchParams.get('colour')
@@ -72,6 +79,7 @@ export default function CollectionPage() {
 
     setFilters((prev) => ({
       ...prev,
+      necklaceTypes: initialNecklaceTypes.length > 0 ? initialNecklaceTypes : prev.necklaceTypes,
       materials: materialParam ? [materialParam] : prev.materials,
       gemstones: gemstoneParam ? [gemstoneParam] : prev.gemstones,
       colours: colourParam ? [colourParam] : prev.colours,
@@ -108,6 +116,12 @@ export default function CollectionPage() {
       handleSelectCategory(value)
       return
     }
+    if (key === 'necklaceTypes' && Array.isArray(value) && value.length > 0 && selectedCategory !== 'necklaces' && selectedCategory !== 'all') {
+      setSelectedCategory('necklaces')
+      const newParams = new URLSearchParams(searchParams)
+      newParams.set('category', 'necklaces')
+      setSearchParams(newParams, { replace: true })
+    }
     setFilters((prev) => ({
       ...prev,
       [key]: value,
@@ -119,6 +133,7 @@ export default function CollectionPage() {
   const handleResetFilters = () => {
     setIsLoading(true)
     setFilters({
+      necklaceTypes: [],
       materials: [],
       gemstones: [],
       colours: [],
@@ -168,50 +183,59 @@ export default function CollectionPage() {
       result = result.filter((p) => p.category === selectedCategory)
     }
 
-    // 2. Price Range Filter
+    // 2. Necklaces Sub-Heading Filter (Short necklaces, Long harams, etc.)
+    if (filters.necklaceTypes && filters.necklaceTypes.length > 0) {
+      result = result.filter((p) => {
+        if (p.category !== 'necklaces') return false
+        const types = Array.isArray(p.necklaceTypes) ? p.necklaceTypes : []
+        return filters.necklaceTypes.some((t) => types.includes(t))
+      })
+    }
+
+    // 3. Price Range Filter
     const { min, max } = filters.priceRange
     if (min > 0 || max < Infinity) {
       result = result.filter((p) => p.price >= min && p.price <= max)
     }
 
-    // 3. Materials Filter
+    // 4. Materials Filter
     if (filters.materials.length > 0) {
       result = result.filter((p) => filters.materials.includes(p.materialGroup))
     }
 
-    // 4. Gemstones Filter
+    // 5. Gemstones Filter
     if (filters.gemstones.length > 0) {
       result = result.filter((p) => filters.gemstones.includes(p.gemstone))
     }
 
-    // 5. Colours Filter
+    // 6. Colours Filter
     if (filters.colours.length > 0) {
       result = result.filter((p) => filters.colours.includes(p.colour))
     }
 
-    // 6. Occasions Filter
+    // 7. Occasions Filter
     if (filters.occasions.length > 0) {
       result = result.filter((p) => filters.occasions.includes(p.occasion))
     }
 
-    // 7. Styles Filter
+    // 8. Styles Filter
     if (filters.styles.length > 0) {
       result = result.filter((p) => filters.styles.includes(p.style))
     }
 
-    // 8. Availability Filter
+    // 9. Availability Filter
     if (filters.availability.length > 0) {
       result = result.filter((p) => filters.availability.includes(p.availability))
     }
 
-    // 9. Sizes Filter
+    // 10. Sizes Filter
     if (filters.sizes.length > 0) {
       result = result.filter(
         (p) => p.sizes && p.sizes.some((sz) => filters.sizes.includes(sz))
       )
     }
 
-    // 10. Discount Filter
+    // 11. Discount Filter
     if (filters.discount) {
       if (filters.discount === 'any') {
         result = result.filter((p) => p.discount > 0)
@@ -257,6 +281,9 @@ export default function CollectionPage() {
       })
     }
 
+    (filters.necklaceTypes || []).forEach((nt) =>
+      chips.push({ type: 'necklaceTypes', value: nt, label: nt })
+    )
     filters.materials.forEach((m) => chips.push({ type: 'materials', value: m, label: m }))
     filters.gemstones.forEach((g) => chips.push({ type: 'gemstones', value: g, label: g }))
     filters.colours.forEach((c) => chips.push({ type: 'colours', value: c, label: c }))
