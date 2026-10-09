@@ -82,26 +82,68 @@ export default function MobileFilterDrawer({
                 <h4 className="font-body text-xs font-bold uppercase tracking-wider text-charcoal mb-3">
                   Jewellery Category
                 </h4>
-                <div className="grid grid-cols-2 gap-2">
+
+                {/* Parent category grid */}
+                <div className="grid grid-cols-2 gap-2 mb-2">
                   {CATEGORIES.map((cat) => {
-                    const isSelected = selectedCategory === cat.slug
+                    const isParentSelected = selectedCategory === cat.slug
+                    const isSubSelected = cat.subcategories?.some((sub) => sub.slug === selectedCategory)
+                    const isActive = isParentSelected || isSubSelected
                     return (
                       <button
                         key={cat.id}
                         onClick={() => onFilterChange('category', cat.slug)}
-                        className={`p-2.5 text-xs text-left border transition-all flex items-center justify-between ${
-                          isSelected
+                        className={`p-2.5 text-xs text-left border transition-all flex items-center justify-between gap-1 ${
+                          isActive
                             ? 'bg-charcoal text-gold border-charcoal font-semibold'
                             : 'bg-white border-sand text-charcoal/80 hover:border-gold'
                         }`}
                       >
-                        <span className="truncate">{cat.name}</span>
-                        {isSelected && <Check className="w-3.5 h-3.5 text-gold shrink-0" />}
+                        <span className="flex items-center gap-1.5 truncate">
+                          <span className="shrink-0">{cat.icon}</span>
+                          <span className="truncate">{cat.name}</span>
+                        </span>
+                        {isActive && <Check className="w-3.5 h-3.5 text-gold shrink-0" />}
                       </button>
                     )
                   })}
                 </div>
+
+                {/* Sub-categories for selected parent */}
+                {selectedCategory && selectedCategory !== 'all' && (() => {
+                  const parentCat = CATEGORIES.find(
+                    (c) => c.slug === selectedCategory || c.subcategories?.some((s) => s.slug === selectedCategory)
+                  )
+                  if (!parentCat?.subcategories?.length) return null
+                  return (
+                    <div className="mt-3">
+                      <p className="font-body text-2xs font-semibold uppercase tracking-wider text-charcoal/50 mb-2">
+                        {parentCat.name} — Types
+                      </p>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {parentCat.subcategories.map((sub) => {
+                          const isSubActive = selectedCategory === sub.slug
+                          return (
+                            <button
+                              key={sub.id}
+                              onClick={() => onFilterChange('category', sub.slug)}
+                              className={`p-2 text-xs text-left border transition-all flex items-center justify-between ${
+                                isSubActive
+                                  ? 'bg-gold/20 border-gold text-charcoal font-semibold'
+                                  : 'bg-sand/30 border-sand/60 text-charcoal/70 hover:border-gold/60'
+                              }`}
+                            >
+                              <span className="truncate">{sub.name}</span>
+                              {isSubActive && <Check className="w-3 h-3 text-gold shrink-0" />}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )
+                })()}
               </div>
+
 
               {/* ── Price Range ── */}
               <div className="pt-5">

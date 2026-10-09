@@ -71,26 +71,72 @@ export default function FilterSidebar({
         isOpen={openSections.categories}
         onToggle={() => toggleSection('categories')}
       >
-        <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+        <div className="space-y-0.5 max-h-80 overflow-y-auto pr-1">
           {CATEGORIES.map((cat) => {
-            const isSelected = selectedCategory === cat.slug
+            const isParentSelected = selectedCategory === cat.slug
+            const isSubSelected = cat.subcategories?.some((sub) => sub.slug === selectedCategory)
+            const isExpanded = isParentSelected || isSubSelected
+
             return (
-              <button
-                key={cat.id}
-                onClick={() => onFilterChange('category', cat.slug)}
-                className={`w-full flex items-center justify-between py-1.5 px-2 text-xs transition-colors rounded-none text-left ${
-                  isSelected
-                    ? 'bg-charcoal text-gold font-semibold'
-                    : 'text-charcoal/80 hover:bg-sand/40 hover:text-charcoal'
-                }`}
-              >
-                <span>{cat.name}</span>
-                {isSelected && <Check className="w-3.5 h-3.5 text-gold" />}
-              </button>
+              <div key={cat.id} className="border-b border-sand/30 last:border-0 pb-0.5 mb-0.5">
+                {/* Parent Category Button */}
+                <button
+                  onClick={() => onFilterChange('category', cat.slug)}
+                  className={`w-full flex items-center justify-between py-1.5 px-2 text-xs transition-colors rounded-none text-left ${
+                    isParentSelected
+                      ? 'bg-charcoal text-gold font-semibold'
+                      : isSubSelected
+                      ? 'text-charcoal font-medium bg-sand/30'
+                      : 'text-charcoal/80 hover:bg-sand/40 hover:text-charcoal'
+                  }`}
+                >
+                  <span className="flex items-center gap-1.5 truncate">
+                    <span className="text-sm shrink-0">{cat.icon}</span>
+                    <span className="truncate">{cat.name}</span>
+                  </span>
+                  <div className="flex items-center gap-1 shrink-0 ml-1">
+                    {isParentSelected && <Check className="w-3 h-3 text-gold" />}
+                    {cat.subcategories?.length > 0 && (
+                      <ChevronDown
+                        className={`w-3 h-3 transition-transform duration-200 ${
+                          isExpanded ? 'rotate-180 text-gold' : 'text-charcoal/40'
+                        }`}
+                      />
+                    )}
+                  </div>
+                </button>
+
+                {/* Sub-categories (shown when parent or sub is selected) */}
+                {isExpanded && cat.subcategories?.length > 0 && (
+                  <div className="pl-5 pt-0.5 pb-1 space-y-0.5">
+                    {cat.subcategories.map((sub) => {
+                      const isSubActive = selectedCategory === sub.slug
+                      return (
+                        <button
+                          key={sub.id}
+                          onClick={() => onFilterChange('category', sub.slug)}
+                          className={`w-full flex items-center justify-between py-1 px-2 text-xs transition-colors rounded-none text-left ${
+                            isSubActive
+                              ? 'text-gold font-semibold'
+                              : 'text-charcoal/60 hover:text-gold hover:bg-sand/20'
+                          }`}
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <span className="w-3 h-px bg-charcoal/20 shrink-0" />
+                            <span>{sub.name}</span>
+                          </span>
+                          {isSubActive && <Check className="w-3 h-3 text-gold shrink-0" />}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
             )
           })}
         </div>
       </FilterSection>
+
 
       {/* ── 2. Price Range ── */}
       <FilterSection

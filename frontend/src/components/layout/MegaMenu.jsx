@@ -20,7 +20,7 @@ const menuVariants = {
 export default function MegaMenu({ data, onMouseEnter, onMouseLeave }) {
   if (!data) return null
 
-  const { items, title, featured, byType = [], byKarat = [], viewAllHref = '/collection' } = data
+  const { items, title, featured, byType = [], byKarat = [], viewAllHref = '/collection', twoColumn = false } = data
 
   return (
     <motion.div
@@ -28,7 +28,9 @@ export default function MegaMenu({ data, onMouseEnter, onMouseLeave }) {
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="absolute top-full left-1/2 -translate-x-1/2 z-50 mt-0 w-[580px] lg:w-[680px] bg-ivory border-t-2 border-gold shadow-luxury"
+      className={`absolute top-full left-1/2 -translate-x-1/2 z-50 mt-0 bg-ivory border-t-2 border-gold shadow-luxury ${
+        twoColumn ? 'w-[720px] lg:w-[820px]' : 'w-[580px] lg:w-[680px]'
+      }`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       role="menu"
@@ -44,7 +46,7 @@ export default function MegaMenu({ data, onMouseEnter, onMouseLeave }) {
             {title && (
               <p className="section-label mb-4">{title}</p>
             )}
-            <ul className="space-y-2.5">
+            <ul className={twoColumn ? 'grid grid-cols-2 gap-x-4 gap-y-2' : 'space-y-2.5'}>
               {items.map((item) => (
                 <li key={item.href}>
                   <Link
@@ -67,7 +69,7 @@ export default function MegaMenu({ data, onMouseEnter, onMouseLeave }) {
 
                     {/* Badge if specified */}
                     {item.badge && (
-                      <span className="text-2xs font-semibold px-2 py-0.5 rounded-full bg-gold/15 text-gold-dark">
+                      <span className="text-2xs font-semibold px-2 py-0.5 rounded-full bg-gold/15 text-gold-dark shrink-0 ml-1">
                         {item.badge}
                       </span>
                     )}

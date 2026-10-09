@@ -152,12 +152,24 @@ export default function CollectionPage() {
   const categoryCounts = useMemo(() => {
     const counts = { all: ALL_PRODUCTS.length }
     CATEGORIES.forEach((cat) => {
-      if (cat.slug !== 'all') {
-        counts[cat.slug] = ALL_PRODUCTS.filter((p) => p.category === cat.slug).length
-      }
+      const productCats = cat.productCategories || [cat.slug]
+      const catCount = ALL_PRODUCTS.filter((p) => productCats.includes(p.category)).length
+      counts[cat.slug] = catCount
+      cat.subcategories?.forEach((sub) => {
+        counts[sub.slug] = catCount
+      })
     })
     return counts
   }, [])
+
+  // Helper: given a selectedCategory slug, return the productCategories array to filter by
+  const resolveProductCategories = (slug) => {
+    for (const cat of CATEGORIES) {
+      if (cat.slug === slug) return cat.productCategories || [cat.slug]
+      if (cat.subcategories?.some((s) => s.slug === slug)) return cat.productCategories || [cat.slug]
+    }
+    return null
+  }
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -165,7 +177,10 @@ export default function CollectionPage() {
 
     // 1. Category Filter
     if (selectedCategory && selectedCategory !== 'all') {
-      result = result.filter((p) => p.category === selectedCategory)
+      const productCats = resolveProductCategories(selectedCategory)
+      if (productCats) {
+        result = result.filter((p) => productCats.includes(p.category))
+      }
     }
 
     // 2. Price Range Filter
@@ -278,7 +293,15 @@ export default function CollectionPage() {
   const totalActiveFilterCount = activeFilterChips.length
 
   const currentCategoryData = useMemo(() => {
-    return CATEGORIES.find((c) => c.slug === selectedCategory) || CATEGORIES[0]
+    if (!selectedCategory || selectedCategory === 'all') {
+      return { name: 'All Jewellery', description: 'Explore our complete curated jewellery collection', icon: '✨' }
+    }
+    for (const cat of CATEGORIES) {
+      if (cat.slug === selectedCategory) return cat
+      const sub = cat.subcategories?.find((s) => s.slug === selectedCategory)
+      if (sub) return { ...sub, description: cat.description, icon: cat.icon, image: cat.image, fallbackImage: cat.fallbackImage }
+    }
+    return { name: 'All Jewellery', description: 'Explore our complete curated jewellery collection', icon: '✨' }
   }, [selectedCategory])
 
   return (
