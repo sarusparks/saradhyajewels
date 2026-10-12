@@ -51,25 +51,33 @@ export default function MegaMenu({ data, onMouseEnter, onMouseLeave }) {
                 <li key={item.href}>
                   <Link
                     to={item.href}
-                    className="flex items-center justify-between font-body text-xs sm:text-sm text-charcoal/80 hover:text-gold transition-all duration-300 group py-0.5"
+                    className="flex items-start justify-between font-body text-charcoal/80 hover:text-gold transition-all duration-300 group py-1"
                     role="menuitem"
                   >
-                    <span className="flex items-center gap-2.5">
-                      {/* Color dot if specified */}
+                    <span className="flex items-start gap-2.5">
+                      {/* Accent dot / line */}
                       {item.colorHex ? (
                         <span
-                          className="w-3 h-3 rounded-full border border-sand shadow-2xs shrink-0"
+                          className="w-3 h-3 rounded-full border border-sand shadow-2xs shrink-0 mt-1"
                           style={{ background: item.colorHex }}
                         />
                       ) : (
-                        <span className="w-2.5 h-px bg-charcoal/20 group-hover:w-4 group-hover:bg-gold transition-all duration-300" />
+                        <span className="w-2.5 h-px bg-charcoal/20 group-hover:w-4 group-hover:bg-gold transition-all duration-300 mt-2 shrink-0" />
                       )}
-                      <span>{item.label}</span>
+                      {/* Label + sublabel stacked */}
+                      <span className="flex flex-col gap-0.5">
+                        <span className="text-xs sm:text-sm leading-snug">{item.label}</span>
+                        {item.sublabel && (
+                          <span className="text-2xs text-charcoal/40 group-hover:text-gold/60 transition-colors duration-300 leading-tight tracking-wide">
+                            {item.sublabel}
+                          </span>
+                        )}
+                      </span>
                     </span>
 
                     {/* Badge if specified */}
                     {item.badge && (
-                      <span className="text-2xs font-semibold px-2 py-0.5 rounded-full bg-gold/15 text-gold-dark shrink-0 ml-1">
+                      <span className="text-2xs font-semibold px-2 py-0.5 rounded-full bg-gold/15 text-gold-dark shrink-0 ml-1 mt-0.5">
                         {item.badge}
                       </span>
                     )}
