@@ -18,6 +18,7 @@ export const NAV_LINKS = [
     label: 'Collection',
     href: '/collection',
     dropdown: {
+      type: 'categories',
       title: 'Shop by Category',
       twoColumn: true,
       items: [
